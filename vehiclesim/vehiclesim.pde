@@ -19,9 +19,9 @@ void setup() {
   world.setGravity(0,0);
   world.setEdges();
   
-  frameRate(24);
+  frameRate(60);
 
-  world.add(qbox(10,200,300,PI/6));
+  //world.add(qbox(10,200,300,PI/6));
   
   textFont(loadFont("Ubuntu.vlw"));
 }
@@ -97,10 +97,9 @@ void draw() {
   
   world.step();
   world.draw(this);
-  world.setEdges();
   
   if (frameCount == 1 || frameCount == 6) {
-    stupidCar(); 
+    stupidCar();  
   }
   
   ArrayList<FBody> bodies = world.getBodies();
@@ -137,9 +136,9 @@ void stupidCar() {
     FBox car = new FBox(20,8);
     car.setNoStroke();
     car.setFill(255);
-    car.setRotation(PI / 2.0);
-    car.setPosition(100+random(10), 20);
-    car.setVelocity(0, 400);
+    car.setRotation(0);
+    car.setPosition(20, height/2 + random(30));
+    car.setVelocity(400, 0);
     car.setRestitution(0.3);
     car.setDamping(0.4);
     car.setAngularDamping(5);
