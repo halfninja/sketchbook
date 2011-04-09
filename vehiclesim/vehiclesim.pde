@@ -89,16 +89,27 @@ void draw() {
   
   world.step();
   world.draw(this);
+  world.setEdges();
   
+  if (frameCount == 1 || frameCount == 6) {
+    stupidCar(); 
+  }
+  /*
   ArrayList<FBody> bodies = world.getBodies();
   for (int i=0; i<bodies.size(); i++) {
     FBody body = (FBody)bodies.get(i); 
     applyLateralFriction(body);
   }
+  */
 }
 
 void keyPressed() {
   if (key == 'c') {
+    stupidCar();
+  } 
+}
+
+void stupidCar() {
     FBox car = new FBox(20,8);
     car.setNoStroke();
     car.setFill(255);
@@ -108,8 +119,7 @@ void keyPressed() {
     car.setRestitution(0.3);
     car.setDamping(0.4);
     car.setAngularDamping(5);
-    world.add(car);
-  } 
+    world.add(car); 
 }
 
 void contactStarted(FContact contact) {
