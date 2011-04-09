@@ -4,20 +4,26 @@ import fisica.*;
 FWorld world;
 
 // Draw shitloads of debug lines?
-final boolean linefest = true;
+boolean linefest = true;
+boolean gui = true;
+
+float textY = 24;
 
 void setup() {
-  size(400, 400);
+  size(600, 400);
   smooth();
   
   Fisica.init(this);
   
   world = new FWorld();
   world.setGravity(0,0);
+  world.setEdges();
   
   frameRate(24);
 
   world.add(qbox(10,200,300,PI/6));
+  
+  textFont(loadFont("Ubuntu.vlw"));
 }
 
 void addCar(float x, float y, float angle) {
@@ -84,6 +90,8 @@ FBody qbox(float x, float y, float w, float angle) {
 }
 
 void draw() {
+  textY = 24;
+  
   background(0);
   noStroke();
   
@@ -94,19 +102,35 @@ void draw() {
   if (frameCount == 1 || frameCount == 6) {
     stupidCar(); 
   }
-  /*
+  
   ArrayList<FBody> bodies = world.getBodies();
   for (int i=0; i<bodies.size(); i++) {
     FBody body = (FBody)bodies.get(i); 
     applyLateralFriction(body);
   }
-  */
+  
+  if (gui) {
+    fill(255);
+    statusLine("c to spawn car");
+    statusLine("d toggles linespam, g toggles this");
+    statusLine(bodies.size()+" bodies");
+    statusLine(frameRate + " FPS");
+  }
+}
+
+void statusLine(String msg) {
+  text(msg, width - textWidth(msg) - 20,textY);
+  textY += 20;
 }
 
 void keyPressed() {
   if (key == 'c') {
     stupidCar();
-  } 
+  } else if (key == 'd') {
+    linefest = !linefest; 
+  } else if (key == 'g') {
+    gui = !gui; 
+  }
 }
 
 void stupidCar() {
