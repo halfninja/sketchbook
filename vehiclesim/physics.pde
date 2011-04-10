@@ -1,12 +1,12 @@
 void applyLateralFriction(FBody body) {
   // Lower to make sideways skidding easier.
-  final float lateralFrictionCoefficient = 1.5;
+  final float lateralFrictionCoefficient = 3.0;
   
   PVector velocity = new PVector(body.getVelocityX(), body.getVelocityY());
   
   // Work out a unit vector for direction we're facing, and use that to calculate sideways
   float r = body.getRotation();
-  PVector direction = new PVector(cos(r), sin(r));
+  PVector direction = unitVector( body.getRotation() );
   PVector sideways = new PVector(-direction.y, direction.x);
 
   // dot product represents how aligned velocity is with the sideways direction 
@@ -26,6 +26,10 @@ void applyLateralFriction(FBody body) {
     gfx.stroke(128,255,255);
     drawLineOff(x, y, sideways);
   }
+}
+
+PVector unitVector(float r) {
+    return new PVector(cos(r), sin(r));
 }
 
 FBody qbox(float x, float y, float w, float angle) {
@@ -48,6 +52,7 @@ void stupidCar() {
       car.setVelocity(0, -400); 
     }
     vehicles.add(car); 
+    bestCar = car;
 }
 
 void resetWorld() {

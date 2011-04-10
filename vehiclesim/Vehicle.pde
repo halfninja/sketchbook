@@ -2,6 +2,8 @@
 class Vehicle {
   public FBody chassis;
   private float steer;
+  private PVector direction;
+  private float acceleration;
   public Vehicle(float len, float wid) {
     chassis = new FBox(len, wid);
     //chassis.setNoStroke();
@@ -12,9 +14,28 @@ class Vehicle {
     chassis.setDamping(0.4);
     chassis.setAngularDamping(5);
     world.add(chassis); 
+    direction = unitVector(chassis.getRotation());
   }
   public void update() {
+    direction = unitVector(chassis.getRotation());
     applyLateralFriction(chassis);
+    float speed = getSpeed();
+    if (steer != 0) {
+       chassis.addTorque(steer * 0.01 * speed);
+    }
+    if (acceleration != 0) {
+       PVector f = new PVector(direction.x, direction.y);
+       f.mult(acceleration);
+       chassis.addForce(f.x, f.y); 
+    }
+  }
+  
+  public float getSpeed() {
+    return mag(chassis.getVelocityX(), chassis.getVelocityY()); 
+  }
+  
+  public void setAcceleration(float acc) {
+    this.acceleration = acc; 
   }
   
   public void setPosition(float x, float y) {

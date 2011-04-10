@@ -12,6 +12,8 @@ float textY = 24;
 
 ArrayList vehicles = new ArrayList();
 
+Vehicle bestCar;
+
 boolean pdf = false;
 
 PFont font;
@@ -102,6 +104,34 @@ void keyPressed() {
   } else if (key == 'p') {
     pdf = true; 
   }
+  
+  if (bestCar == null) return;
+  switch(keyCode) {
+    case LEFT: 
+      bestCar.setSteering(-0.8);
+      break;
+    case RIGHT:
+      bestCar.setSteering(0.8);
+      break;
+    case UP:
+      bestCar.setAcceleration(100);
+      break;
+    case DOWN:
+      bestCar.setAcceleration(-100);
+      break;
+  } 
+}
+
+void keyReleased() {
+  if (bestCar == null) return;
+  switch(keyCode) {
+    case LEFT: case RIGHT:
+      bestCar.setSteering(0);
+      break;
+    case UP: case DOWN:
+      bestCar.setAcceleration(0);
+      break;
+  } 
 }
 
 void contactStarted(FContact contact) {
