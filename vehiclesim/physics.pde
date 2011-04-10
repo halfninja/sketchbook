@@ -1,6 +1,6 @@
 void applyLateralFriction(FBody body) {
   // Lower to make sideways skidding easier.
-  final float lateralFrictionCoefficient = 4.0;
+  final float lateralFrictionCoefficient = 1.5;
   
   PVector velocity = new PVector(body.getVelocityX(), body.getVelocityY());
   
