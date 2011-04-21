@@ -1,3 +1,6 @@
+
+// TODO when force less than a certain amount, kill lateral
+// velocity entirely - tyres are gripped
 void applyLateralFriction(FBody body) {
   // Lower to make sideways skidding easier.
   final float lateralFrictionCoefficient = 3.0;
@@ -58,5 +61,5 @@ void stupidCar() {
 void resetWorld() {
   world.clear();  
   world.setGravity(0,0);
-  world.setEdges();
+//  world.setEdges();
 }
