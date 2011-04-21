@@ -15,6 +15,8 @@ ArrayList vehicles = new ArrayList();
 
 Vehicle bestCar;
 
+PImage carImage;
+
 boolean pdf = false;
 
 PFont font;
@@ -65,6 +67,8 @@ void setup() {
   
   gfx = g;
   
+  carImage = loadImage("car.png");
+  
   randomSeed(3);
 }
 
@@ -86,15 +90,23 @@ void draw() {
   noStroke();
   
   world.step();
-  world.draw(gfx);
+  //world.draw(gfx);
   
   if (frameCount < 600 && frameCount % 30 == 0) {
     stupidCar();  
   }
   
   for (int i=0; i<vehicles.size(); i++) {
+    pushMatrix();
     Vehicle vehicle = (Vehicle)vehicles.get(i);
     vehicle.update();
+    FBody b = vehicle.chassis;
+    translate(b.getX(), b.getY());
+    scale(0.08);
+    rotate(b.getRotation());
+    translate(-120,-80);
+    image(carImage, 0, 0);
+    popMatrix();
   }
   
   if (gui && !pdf) {
