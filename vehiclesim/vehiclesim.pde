@@ -1,6 +1,7 @@
 import processing.pdf.*;
 import processing.opengl.*;
 import fisica.*;
+import java.util.LinkedList;
 
 FWorld world;
 
@@ -21,6 +22,32 @@ PFont font;
 PGraphics gfx;
 
 final String PDF_FILE = "output/snapshot.pdf";
+
+String[] OH_GOODNESS = new String[] { "FUCK", "SHIT", "BASTARD", "OW", "SON OF A" };
+
+class Expletive {
+  private PVector position = new PVector();
+  private String text;
+  private int age = 30;
+  public FBody body;
+  public Expletive(FBody owner, String text, PVector pos) {
+    body = owner;
+    position.set(pos);
+    this.text = text;
+  }
+  public void draw() {
+    textFont(font);
+    fill(255,0,0);
+    text(this.text, position.x, position.y);
+    position.add(0,-1,0); 
+    age--;
+  }
+  public boolean isDead() {
+    return age <= 0; 
+  }
+}
+
+LinkedList expletives = new LinkedList();
 
 void setup() {
   size(600, 400);
@@ -85,6 +112,15 @@ void draw() {
     pdf = false; 
     println("PDF created as " + PDF_FILE);
   }
+  
+  for (Iterator it=expletives.iterator(); it.hasNext(); ) {
+    Expletive e = (Expletive)it.next();
+    if (e.isDead()) {
+      it.remove();
+    } else {
+      e.draw(); 
+    }
+  }
 }
 
 void statusLine(String msg) {
@@ -135,14 +171,24 @@ void keyReleased() {
 }
 
 void contactStarted(FContact contact) {
+  FBody body = contact.getBody1();
   if (linefest) {
-    FBody body = contact.getBody1();
     body.setFill(255, 0, 0);
     
     noFill();
     stroke(255);
     ellipse(contact.getX(), contact.getY(), 30, 30);
   }
+  
+  for (Iterator it=expletives.iterator(); it.hasNext(); ) {
+    Expletive e = (Expletive)it.next();
+    if (e.body == body) {
+      return; 
+    }
+  }
+  
+  int r = int(random(OH_GOODNESS.length));
+  expletives.add(new Expletive(body, OH_GOODNESS[r], new PVector(contact.getX(), contact.getY())));
 }
 
 void contactEnded(FContact contact) {
